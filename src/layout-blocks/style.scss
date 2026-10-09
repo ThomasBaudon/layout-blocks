@@ -1,0 +1,78 @@
+.linked-card {
+	position: relative;
+	overflow: hidden;
+	isolation: isolate; // nouveau : le calque (z-index négatif) reste dans la carte
+	transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+	// Liens et boutons intérieurs : au-dessus du lien étiré, donc cliquables.
+	a:not(.linked-card__link),
+	button,
+	input,
+	select,
+	textarea {
+		position: relative;
+		z-index: 2;
+	}
+
+	img {
+		transition: transform 0.4s ease;
+	}
+
+	&.is-hover-lift:hover {
+		transform: translateY(-4px);
+		box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+	}
+
+	&.is-hover-zoom:hover img {
+		transform: scale(1.05);
+	}
+
+	&.is-hover-shadow:hover {
+		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+	}
+
+	// Styles de bloc
+	&.is-style-outlined {
+		border: 1px solid rgba(0, 0, 0, 0.15);
+	}
+
+	&.is-style-elevated {
+		box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+	}
+}
+
+// Le lien invisible qui couvre toute la carte.
+.linked-card__link {
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+	margin: 0 !important; // neutralise l'espacement automatique du layout
+	border-radius: inherit;
+
+	&:focus-visible {
+		outline: 2px solid currentColor;
+		outline-offset: -2px;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.linked-card,
+	.linked-card img {
+		transition: none;
+	}
+
+	.linked-card.is-hover-lift:hover,
+	.linked-card.is-hover-zoom:hover img {
+		transform: none;
+	}
+}
+
+// Calque de couleur : au-dessus de l'image de fond, sous le contenu.
+.linked-card__overlay {
+	position: absolute;
+	inset: 0;
+	z-index: -1;
+	margin: 0 !important; // neutralise l'espacement automatique du layout
+	border-radius: inherit;
+	pointer-events: none;
+}
